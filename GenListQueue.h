@@ -5,7 +5,7 @@ stwhite@chapman.edu
 Assignment 4 Registrar's office
 Data Structures Section 1
 */
-
+#pragma once
 #include "GenLinkedList.h"
 
 template <class T>
@@ -22,7 +22,7 @@ public:
 
 	//aux functions
 	T peak();
-	bool isFull();
+	//bool isFull();
 	bool isEmpty();
 	int getSize();
 
@@ -35,7 +35,7 @@ public:
 	//int rear; //aka tail
 	//int numElements;
 
-	GenLinkedList<T>* myQueue; //the actual array
+	GenLinkedList<T>* myList; //the actual list
 
 };
 
@@ -51,20 +51,20 @@ struct QueueEmptyException : public std::exception
 template<class T>
 inline GenListQueue<T>::GenListQueue()
 {
-	myQueue = new GenLinkedList<T>();
+	myList = new GenLinkedList<T>();
 }
 
 template<class T>
 inline GenListQueue<T>::~GenListQueue()
 {
-	delete myQueue;
+	delete myList;
 }
 
 //insert a given character into the back of the queue
 template<class T>
 void GenListQueue<T>::insert(T d)
 {
-	myQueue.insertBack(d);
+	myList->insertBack(d);
 }
 
 //returns and removes the first element in the list
@@ -73,15 +73,35 @@ T GenListQueue<T>::remove()
 {
 	//if the list is empty, it will throw a list empty exception.
 	//but since this wont appear as a list to the user, "convert"
-	//it to a QueueEmptyException instead
+	//it to a QueueEmptyException instead (just to make it less
+	// confusing to the user
 	try
 	{
-		return myQueue.removeFront();
+		return myList->removeFront();
 	}
 	catch (ListEmptyException e)
 	{
 		throw QueueEmptyException();
 	}
 	
+}
+
+//returns the value of the first element in the list
+template<class T>
+T GenListQueue<T>::peak()
+{
+	return myList->getPos(0);
+}
+
+template<class T>
+bool GenListQueue<T>::isEmpty()
+{
+	return myList->isEmpty();
+}
+
+template<class T>
+int GenListQueue<T>::getSize()
+{
+	return myList->getSize();
 }
 

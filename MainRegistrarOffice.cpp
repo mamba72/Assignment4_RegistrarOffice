@@ -14,4 +14,13 @@ using namespace std;
 int main(int argc, char** argv)
 {
 	cout << "Hello!" << endl;
+
+
+	GenListQueue<int> myQueue = GenListQueue<int>();
+
+	myQueue.insert(5);
+	myQueue.insert(6);
+
+	cout << myQueue.peak() << endl;
+
 }

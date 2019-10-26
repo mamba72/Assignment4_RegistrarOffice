@@ -5,6 +5,7 @@ stwhite@chapman.edu
 Assignment 4 Registrar's office
 Data Structures Section 1
 */
+#pragma once
 
 #include "GenListNode.h"
 #include <exception>
@@ -33,6 +34,7 @@ public:
 	int find(T d);
 	GenListNode<T>* remove(T d);//the data in the node to search for
 
+	T getPos(int pos);
 	bool isEmpty();
 	void printList();
 	unsigned int getSize();
@@ -258,6 +260,28 @@ GenListNode<T>* GenLinkedList<T>::remove(T d)
 	size--;
 
 	return curr;
+}
+
+//starts at zero. treat it like an array accessor
+template<class T>
+T GenLinkedList<T>::getPos(int pos)
+{
+	if (isEmpty())
+		throw ListEmptyException();
+
+	GenListNode<T>* curr = front;
+	int index = 0;
+
+	while (index != pos)
+	{
+		curr = curr->next;
+
+		if (curr == NULL)
+			return NULL;
+		index++;
+	}
+
+	return curr->data;
 }
 
 template<class T>

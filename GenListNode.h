@@ -5,6 +5,7 @@ stwhite@chapman.edu
 Assignment 4 Registrar's office
 Data Structures Section 1
 */
+#pragma once
 
 template <class T>
 class GenListNode
