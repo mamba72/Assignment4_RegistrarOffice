@@ -14,12 +14,13 @@ using namespace std;
 class Student
 {
 public:
-	Student(int time);
+	Student(unsigned int time);
 	~Student();
 
 	void timeStep();
 
 	bool isAtWindow;
+	unsigned int originalWindowTime;
 	unsigned int windowTimeLeft;
 	unsigned int waitTime;
 };

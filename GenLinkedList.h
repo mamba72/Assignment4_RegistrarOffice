@@ -34,10 +34,12 @@ public:
 	int find(T d);
 	GenListNode<T>* remove(T d);//the data in the node to search for
 
+	//helper functions
 	T getPos(int pos);
 	bool isEmpty();
 	void printList();
 	unsigned int getSize();
+	T* toArray();
 
 };
 
@@ -277,7 +279,7 @@ T GenLinkedList<T>::getPos(int pos)
 		curr = curr->next;
 
 		if (curr == NULL)
-			return NULL;
+			return (T)NULL;//cast to type T to prevent throwing warnings
 		index++;
 	}
 
@@ -309,4 +311,24 @@ template<class T>
 unsigned int GenLinkedList<T>::getSize()
 {
 	return size;
+}
+
+//return an array from the list
+template<class T>
+T* GenLinkedList<T>::toArray()
+{
+	T* myArray = new T[size];
+
+	unsigned int indexCounter = 0;
+	GenListNode<T>* curr = front;
+	while (curr != NULL)
+	{
+		myArray[indexCounter] = curr->data;
+		++indexCounter;
+
+		curr = curr->next;
+	}
+
+	return myArray;
+
 }

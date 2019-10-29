@@ -8,4 +8,12 @@ Data Structures Section 1
 
 #include "Window.h"
 
+Window::Window()
+{
 
+}
+
+Window::~Window()
+{
+
+}

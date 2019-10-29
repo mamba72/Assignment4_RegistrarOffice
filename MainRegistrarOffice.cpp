@@ -8,6 +8,7 @@ Data Structures Section 1
 
 #include <iostream>
 #include "GenListQueue.h"
+#include "Registrar.h"
 using namespace std;
 
 
@@ -15,12 +16,29 @@ int main(int argc, char** argv)
 {
 	cout << "Hello!" << endl;
 
+	Registrar* office;
+	//this try is to catch any file reading errors
+	try
+	{
+		office = new Registrar("ExampleTestInput.txt");
+	}
+	catch (FileNotInCorrectFormatException e)
+	{
+		//cout << "File not in correct format exception.\n";
+		cout << e.what() << endl;
+		return 1;
+	}
+	catch (CouldNotOpenFileException e)
+	{
+		//cout << "Could not open file exception.\n";
+		cout << e.what() << endl;
+		return 1;
+	}
+	
 
-	GenListQueue<int> myQueue = GenListQueue<int>();
 
-	myQueue.insert(5);
-	myQueue.insert(6);
+	cout << office->fileLines->peak() << endl;
+	cout << office->studentLine->peak() << endl;
 
-	cout << myQueue.peak() << endl;
-
+	return 0;
 }
