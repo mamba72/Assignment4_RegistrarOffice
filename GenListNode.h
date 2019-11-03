@@ -22,13 +22,13 @@ public:
 };
 
 template<class T>
-inline GenListNode<T>::GenListNode()
+ GenListNode<T>::GenListNode()
 {
 
 }
 
 template<class T>
-inline GenListNode<T>::GenListNode(T d)
+ GenListNode<T>::GenListNode(T d)
 {
 	data = d;
 	next = NULL;
@@ -36,7 +36,7 @@ inline GenListNode<T>::GenListNode(T d)
 }
 
 template<class T>
-inline GenListNode<T>::~GenListNode()
+ GenListNode<T>::~GenListNode()
 {
 	next = NULL;
 	prev = NULL;

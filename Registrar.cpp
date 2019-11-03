@@ -9,7 +9,11 @@ Data Structures Section 1
 
 Registrar::Registrar(string fileName)
 {
+	currentTime = 0;
 	readFile(fileName);
+	studentLine = new GenListQueue<Student*>();
+	completedStudents = new GenLinkedList<Student*>();
+	statsMonitor = new StatisticsMonitor();
 
 	//assign the first number in the file to the number of windows
 	numWindows = fileLines->remove();
@@ -72,11 +76,15 @@ bool Registrar::getNextStudents()
 	if (hasMoreStudents() == false)
 		return false;
 
+	cout << "Current Time: " << currentTime << "\tFileLines peak: " << fileLines->peak() << endl;
+	if (currentTime != fileLines->peak())
+		return false;
+
 	int numNextStudents = fileLines->remove();
 	for (int i = 0; i < numNextStudents; ++i)
 	{
 		unsigned int studentWindowTime = fileLines->remove();
-		Student* nextStudent = new Student(studentWindowTime);
+		Student* nextStudent = new Student(studentWindowTime, currentTime);
 		studentLine->insert(nextStudent);
 	}
 
@@ -88,4 +96,44 @@ bool Registrar::hasMoreStudents()
 {
 	//return the opposite of isEmpty
 	return !fileLines->isEmpty();
+}
+
+//if any of the windows are idle, try to fill them with a student
+void Registrar::fillWindows()
+{
+
+}
+
+//this will return whether the registrar is completely done or not
+bool Registrar::stillProcessingStudents()
+{
+	if (hasMoreStudents())
+		return true;
+	
+	//check if any windows are still occupied
+	for (int i = 0; i < numWindows; ++i)
+	{
+		if (windowArray[i].occupied == true)
+			return true;
+	}
+
+	return false;
+}
+
+//actually step through one time unit
+void Registrar::timeStep()
+{
+	//if the student line is not empty, then time step the students
+	if (!studentLine->isEmpty())
+	{
+		
+	}
+
+	//the students will enter the line
+	getNextStudents();
+
+
+
+	//increment the current time
+	currentTime++;
 }

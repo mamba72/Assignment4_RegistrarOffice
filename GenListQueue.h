@@ -55,7 +55,7 @@ inline GenListQueue<T>::GenListQueue()
 }
 
 template<class T>
-inline GenListQueue<T>::~GenListQueue()
+GenListQueue<T>::~GenListQueue()
 {
 	delete myList;
 }
@@ -90,7 +90,15 @@ T GenListQueue<T>::remove()
 template<class T>
 T GenListQueue<T>::peak()
 {
-	return myList->getPos(0);
+	try
+	{
+		return myList->getPos(0);
+	}
+	catch (ListEmptyException e)
+	{
+		throw QueueEmptyException();
+	}
+	
 }
 
 template<class T>

@@ -11,6 +11,7 @@ Data Structures Section 1
 #include "Student.h"
 #include "Window.h"
 #include "GenListQueue.h"
+#include "StatisticsMonitor.h"
 #include "fstream"
 #include <string>
 #include <exception>
@@ -28,6 +29,7 @@ public:
 	void readFile(string fileName);
 	bool getNextStudents();
 	bool hasMoreStudents();
+	bool stillProcessingStudents();
 
 	void timeStep();
 
@@ -42,7 +44,10 @@ public:
 	//the list of all students done with the registrar
 	GenLinkedList<Student*>* completedStudents;
 
+	//the object that maintains all the statistics
+	StatisticsMonitor* statsMonitor;
 
+	unsigned int currentTime;
 };
 
 //exception to tell whether the file could be opened

@@ -7,6 +7,7 @@ Data Structures Section 1
 */
 
 #include "Student.h"
+#include "StatisticsMonitor.h"
 
 class Window
 {
@@ -15,8 +16,12 @@ public:
 	~Window();
 
 	//functions
+	void timeStep();
 
 	//variables
+	bool occupied;
 	Student* currentStudent;
 
+	//stats monitoring vars
+	unsigned int idleTime;
 };

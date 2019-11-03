@@ -8,12 +8,27 @@ Data Structures Section 1
 
 #include "Window.h"
 
+//only used for creating an array
 Window::Window()
 {
-
+	occupied = false;
+	idleTime = 0;
 }
 
 Window::~Window()
 {
 
+}
+
+//step through the time
+void Window::timeStep()
+{
+	if (occupied == true)
+	{
+		currentStudent->timeStep();
+	}
+	else
+	{
+		idleTime++;
+	}
 }

@@ -38,7 +38,29 @@ int main(int argc, char** argv)
 
 
 	cout << office->fileLines->peak() << endl;
-	cout << office->studentLine->peak() << endl;
+	//cout << office->studentLine->peak() << endl;
+
+	office->timeStep();
+
+	office->timeStep();
+	cout << office->studentLine->peak()->toString() << endl;
+
+
+
+	//now actually do some stuff like stepping through time
+	//cause you know... im baller like that
+
+	//main while loop
+	//do while because the 0th time step is getting all the students
+
+	//do
+	//{
+	//	office->timeStep();
+
+
+	//} while (office->stillProcessingStudents());
+
+
 
 	return 0;
 }

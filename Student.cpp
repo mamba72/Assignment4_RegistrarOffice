@@ -7,12 +7,17 @@ Data Structures Section 1
 */
 
 #include "Student.h"
+#include <string>
 
-Student::Student(int time)
+Student::Student(unsigned int timeNeeded, unsigned int currentTime)
 {
 	isAtWindow = false;
-	windowTimeLeft = time;
-	waitTime = 0;
+	//windowTimeLeft = time;
+	//waitTime = 0;
+
+	timeNeededAtWindow = timeNeeded;
+	timeEnteredLine = currentTime;
+	
 }
 
 Student::~Student()
@@ -22,8 +27,15 @@ Student::~Student()
 
 void Student::timeStep()
 {
-	if (isAtWindow == true)
+	/*if (isAtWindow == true)
 		windowTimeLeft--;
 	else
-		waitTime++;
+		waitTime++;*/
+}
+
+//for easy printing
+string Student::toString()
+{
+	string outputStr = "Time Entered: " + to_string(timeEnteredLine) + "\tTime needed at window: " + to_string(timeNeededAtWindow);
+	return outputStr;
 }
