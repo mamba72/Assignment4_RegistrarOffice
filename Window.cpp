@@ -68,6 +68,8 @@ Student* Window::removeStudent()
 
 	Student* temp = currentStudent;
 
+	currentStudent->timeLeftWindow = currentTime;
+
 	currentStudent = NULL;
 	timeWithCurrentStudent = 0;
 	occupied = false;

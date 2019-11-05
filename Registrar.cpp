@@ -19,11 +19,6 @@ Registrar::Registrar(string fileName)
 	numWindows = fileLines->remove();
 	//create the window array
 	windowArray = new Window[numWindows];
-
-	for (int i = 0; i < numWindows; ++i)
-	{
-		windowArray[i].statsMonitor = statsMonitor;
-	}
 }
 
 Registrar::~Registrar()
@@ -54,10 +49,14 @@ void Registrar::readFile(string fileName)
 	//go through the file, adding each line to the list
 	while (getline(file, line))
 	{
-		//lineList.insertBack(line);
 		try
 		{
 			int num = stoi(line);
+
+			//make sure all the numbers are greater than 0
+			if (num < 1)
+				throw FileNotInCorrectFormatException("File cannot contain numbers less than 1");
+			
 			fileLines->insert(num);
 		}
 		catch (invalid_argument e)
@@ -84,8 +83,16 @@ bool Registrar::getNextStudents()
 	//cout << "Current Time: " << currentTime << "\tFileLines peak: " << fileLines->peak() << endl;
 	if (currentTime != fileLines->peak())
 		return false;
-
-	int time = fileLines->remove();//remove the time number from the queue
+	int time;
+	try
+	{
+		time = fileLines->remove();//remove the time number from the queue
+	}
+	catch (QueueEmptyException e)
+	{
+		throw FileNotInCorrectFormatException("The amount of students does not match the times provided.");
+	}
+	
 
 	int numNextStudents = fileLines->remove();
 	for (int i = 0; i < numNextStudents; ++i)
@@ -179,4 +186,71 @@ void Registrar::timeStep()
 
 	//increment the current time
 	currentTime++;
+}
+
+//calculate and print out the required stats
+void Registrar::calcStats()
+{
+
+	//student focused stats
+	unsigned int totalStudentQueueWaitTime = 0;
+	float meanWaitTime;
+	unsigned int medianWaitTime = 0;
+	unsigned int longestWaitTime = 0;
+	unsigned int numWaitingOverTenMin = 0;
+
+	unsigned int numStudents = completedStudents->getSize();
+	//get the total student wait times
+	//does not end up ruining the list (inserts the student back into the list so we can do more stats)
+	for(int i = 0; i < numStudents; ++i)
+	{
+		Student* currStudent = completedStudents->removeFront();
+
+		cout << "\tTime entered Queue: " << currStudent->timeEnteredWindow << " Time Entered Window: " << currStudent->timeEnteredLine << endl;
+		unsigned int studentsWaitTime = currStudent->timeEnteredWindow - currStudent->timeEnteredLine;
+		totalStudentQueueWaitTime += studentsWaitTime;
+
+		if (studentsWaitTime > longestWaitTime)
+			longestWaitTime = studentsWaitTime;
+
+		if (studentsWaitTime > 10)
+			numWaitingOverTenMin++;
+
+
+		completedStudents->insertBack(currStudent);
+	}
+
+	meanWaitTime = totalStudentQueueWaitTime / numStudents;
+
+	//window focused stats
+	float meanIdleTime;
+	//set it to -1 so it is always replaced by a window's idle time
+	unsigned int longestIdleTime = 0;
+	unsigned int numIdleOverFiveMin = 0; //make sure this is at first
+
+	unsigned int totalWindowIdleTime = 0;
+
+	for (int i = 0; i < numWindows; ++i)
+	{
+		totalWindowIdleTime += windowArray[i].idleTime;
+
+		//assign the longest idle time
+		if (longestIdleTime < windowArray[i].idleTime)
+			longestIdleTime = windowArray[i].idleTime;
+
+		if (windowArray[i].idleTime > 5)
+			numIdleOverFiveMin++;
+
+	}
+
+	meanIdleTime = totalWindowIdleTime / numWindows;
+
+	cout << "Total student wait time: " << totalStudentQueueWaitTime << endl;
+	cout << "1. Mean Student wait time: " << meanWaitTime<< endl;
+	cout << "2. Median Student Wait Time: " << medianWaitTime << endl;
+	cout << "3. Longest Student Wait Time: " << longestWaitTime << endl;
+	cout << "4. Number of Students Waiting Over 10 Minutes: " << numWaitingOverTenMin << endl;
+	cout << "5. Mean Window Idle Time: " << meanIdleTime << endl;
+	cout << "6. Longest Window Idle Time: " << longestIdleTime << endl;
+	cout << "7. Number of windows idle for over 5 minutes: " << numIdleOverFiveMin << endl;
 }

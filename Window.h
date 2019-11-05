@@ -35,7 +35,7 @@ public:
 	unsigned int currentTime;
 	unsigned int timeWithCurrentStudent;
 
-	StatisticsMonitor* statsMonitor;
+	//StatisticsMonitor* statsMonitor;
 
 private:
 	Student* currentStudent;

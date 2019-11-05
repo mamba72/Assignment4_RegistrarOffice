@@ -28,6 +28,7 @@ public:
 	unsigned int timeEnteredLine;
 	unsigned int timeEnteredWindow;
 	unsigned int timeNeededAtWindow;
+	unsigned int timeLeftWindow;
 
 };
 

@@ -30,6 +30,7 @@ public:
 	bool getNextStudents();
 	bool hasMoreStudents();
 	bool stillProcessingStudents();
+	void calcStats();
 
 	void timeStep();
 

@@ -83,6 +83,8 @@ int main(int argc, char** argv)
 
 	cout << "Length of completed students list: " <<  office->completedStudents->getSize() << endl;
 
+
+	office->calcStats();
 	//now actually do some stuff like stepping through time
 	//cause you know... im baller like that
 
