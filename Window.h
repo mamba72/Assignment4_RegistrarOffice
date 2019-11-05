@@ -5,23 +5,38 @@ stwhite@chapman.edu
 Assignment 4 Registrar's office
 Data Structures Section 1
 */
-
+#pragma once
 #include "Student.h"
 #include "StatisticsMonitor.h"
+#include <string>
+//#include "Registrar.h"
 
 class Window
 {
 public:
-	Window();
+	Window();	
 	~Window();
 
 	//functions
 	void timeStep();
+	void takeInStudent(Student* student, unsigned int currTime);
+
+	bool isDoneWithStudent();
+	Student* removeStudent();
+	string toString();
 
 	//variables
 	bool occupied;
-	Student* currentStudent;
+
 
 	//stats monitoring vars
 	unsigned int idleTime;
+
+	unsigned int currentTime;
+	unsigned int timeWithCurrentStudent;
+
+	StatisticsMonitor* statsMonitor;
+
+private:
+	Student* currentStudent;
 };

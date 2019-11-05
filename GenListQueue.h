@@ -29,12 +29,6 @@ public:
 	//NOTE: we dont need these variables because we dont need to make a 
 	//circular queue and the list itself maintains the size information
 
-	//variables
-	//int size;
-	//int front; //aka head
-	//int rear; //aka tail
-	//int numElements;
-
 	GenLinkedList<T>* myList; //the actual list
 
 };

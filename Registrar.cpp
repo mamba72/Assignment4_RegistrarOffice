@@ -19,6 +19,11 @@ Registrar::Registrar(string fileName)
 	numWindows = fileLines->remove();
 	//create the window array
 	windowArray = new Window[numWindows];
+
+	for (int i = 0; i < numWindows; ++i)
+	{
+		windowArray[i].statsMonitor = statsMonitor;
+	}
 }
 
 Registrar::~Registrar()
@@ -76,9 +81,11 @@ bool Registrar::getNextStudents()
 	if (hasMoreStudents() == false)
 		return false;
 
-	cout << "Current Time: " << currentTime << "\tFileLines peak: " << fileLines->peak() << endl;
+	//cout << "Current Time: " << currentTime << "\tFileLines peak: " << fileLines->peak() << endl;
 	if (currentTime != fileLines->peak())
 		return false;
+
+	int time = fileLines->remove();//remove the time number from the queue
 
 	int numNextStudents = fileLines->remove();
 	for (int i = 0; i < numNextStudents; ++i)
@@ -101,12 +108,32 @@ bool Registrar::hasMoreStudents()
 //if any of the windows are idle, try to fill them with a student
 void Registrar::fillWindows()
 {
+	//if the line is empty, dont try to remove students from it.
+	if (studentLine->isEmpty())
+		return;
 
+	//iterate through the windows, if the window is open, put a student in it
+	for (int i = 0; i < numWindows; ++i)
+	{
+		//if the wondow is free...
+		if (windowArray[i].occupied == false)
+		{
+			try
+			{
+				windowArray[i].takeInStudent(studentLine->remove(), currentTime);
+			}
+			catch (QueueEmptyException e)
+			{
+				break;
+			}
+		}
+	}
 }
 
 //this will return whether the registrar is completely done or not
 bool Registrar::stillProcessingStudents()
 {
+	//if there are still students in the file
 	if (hasMoreStudents())
 		return true;
 	
@@ -117,22 +144,38 @@ bool Registrar::stillProcessingStudents()
 			return true;
 	}
 
+	//if there are any students in the line
+	if (studentLine->isEmpty() == false)
+		return true;
+
 	return false;
 }
 
 //actually step through one time unit
 void Registrar::timeStep()
 {
-	//if the student line is not empty, then time step the students
-	if (!studentLine->isEmpty())
+	//iterate through the windows time stepping them
+	for (int i = 0; i < numWindows; ++i)
 	{
-		
+		windowArray[i].timeStep();
+	}
+	//remove the current students from the windows if they need to be removed, and add them to completed list
+	for (int i = 0; i < numWindows; ++i)
+	{
+		if (windowArray[i].isDoneWithStudent())
+		{
+			Student* completedStudent = windowArray[i].removeStudent();
+			completedStudents->insertFront(completedStudent);
+		}
 	}
 
 	//the students will enter the line
+	//cout << "Gathering next students.\n";
 	getNextStudents();
 
-
+	//now ensure that all the windows are occupied
+	//cout << "Filling Windows.\n";
+	fillWindows();
 
 	//increment the current time
 	currentTime++;
