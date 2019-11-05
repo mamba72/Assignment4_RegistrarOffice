@@ -27,10 +27,7 @@ Student::~Student()
 
 void Student::timeStep()
 {
-	/*if (isAtWindow == true)
-		windowTimeLeft--;
-	else
-		waitTime++;*/
+
 }
 
 //for easy printing

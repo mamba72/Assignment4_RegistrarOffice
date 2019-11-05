@@ -28,7 +28,7 @@ void Window::timeStep()
 	if (occupied == true)
 	{
 		timeWithCurrentStudent++;
-		currentStudent->timeStep();
+		//currentStudent->timeStep();
 	}
 	else
 	{
@@ -64,7 +64,7 @@ bool Window::isDoneWithStudent()
 //this will reset all the values and remove the student from the window
 Student* Window::removeStudent()
 {
-	cout << "\t\tRemoving Student\n";
+	//cout << "\t\tRemoving Student\n";
 
 	Student* temp = currentStudent;
 

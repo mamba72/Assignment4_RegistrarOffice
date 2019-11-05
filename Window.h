@@ -7,7 +7,6 @@ Data Structures Section 1
 */
 #pragma once
 #include "Student.h"
-#include "StatisticsMonitor.h"
 #include <string>
 //#include "Registrar.h"
 
@@ -35,7 +34,6 @@ public:
 	unsigned int currentTime;
 	unsigned int timeWithCurrentStudent;
 
-	//StatisticsMonitor* statsMonitor;
 
 private:
 	Student* currentStudent;

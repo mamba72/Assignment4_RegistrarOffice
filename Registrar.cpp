@@ -6,6 +6,8 @@ Assignment 4 Registrar's office
 Data Structures Section 1
 */
 #include "Registrar.h"
+#include <algorithm>
+using namespace std;
 
 Registrar::Registrar(string fileName)
 {
@@ -80,9 +82,16 @@ bool Registrar::getNextStudents()
 	if (hasMoreStudents() == false)
 		return false;
 
-	//cout << "Current Time: " << currentTime << "\tFileLines peak: " << fileLines->peak() << endl;
-	if (currentTime != fileLines->peak())
-		return false;
+	try
+	{
+		if (currentTime != fileLines->peak())
+			return false;
+	}
+	catch (QueueEmptyException e)
+	{
+		throw FileNotInCorrectFormatException("The time the next batch of students arrives could not be determined.\nEnsure your file is in the correct format.");
+	}
+	
 	int time;
 	try
 	{
@@ -90,17 +99,34 @@ bool Registrar::getNextStudents()
 	}
 	catch (QueueEmptyException e)
 	{
+		throw FileNotInCorrectFormatException("The time the next batch of students arrives could not be determined.\nEnsure your file is in the correct format.");
+	}
+	
+	int numNextStudents;
+	try
+	{
+		numNextStudents = fileLines->remove();
+	}
+	catch (QueueEmptyException e)
+	{
 		throw FileNotInCorrectFormatException("The amount of students does not match the times provided.");
 	}
 	
-
-	int numNextStudents = fileLines->remove();
-	for (int i = 0; i < numNextStudents; ++i)
+	try
 	{
-		unsigned int studentWindowTime = fileLines->remove();
-		Student* nextStudent = new Student(studentWindowTime, currentTime);
-		studentLine->insert(nextStudent);
+		for (int i = 0; i < numNextStudents; ++i)
+		{
+			unsigned int studentWindowTime = fileLines->remove();
+			Student* nextStudent = new Student(studentWindowTime, currentTime);
+			studentLine->insert(nextStudent);
+		}
 	}
+	catch (QueueEmptyException e)
+	{
+		throw FileNotInCorrectFormatException("The amount of students does not match the times provided.");
+	}
+
+	
 
 	return true;
 }
@@ -177,11 +203,9 @@ void Registrar::timeStep()
 	}
 
 	//the students will enter the line
-	//cout << "Gathering next students.\n";
 	getNextStudents();
 
 	//now ensure that all the windows are occupied
-	//cout << "Filling Windows.\n";
 	fillWindows();
 
 	//increment the current time
@@ -200,15 +224,19 @@ void Registrar::calcStats()
 	unsigned int numWaitingOverTenMin = 0;
 
 	unsigned int numStudents = completedStudents->getSize();
+
+	unsigned int* queueWaitTimeArray = new unsigned int[numStudents];
 	//get the total student wait times
 	//does not end up ruining the list (inserts the student back into the list so we can do more stats)
 	for(int i = 0; i < numStudents; ++i)
 	{
 		Student* currStudent = completedStudents->removeFront();
 
-		cout << "\tTime entered Queue: " << currStudent->timeEnteredWindow << " Time Entered Window: " << currStudent->timeEnteredLine << endl;
+		//cout << "\tTime entered Queue: " << currStudent->timeEnteredWindow << " Time Entered Window: " << currStudent->timeEnteredLine << endl;
 		unsigned int studentsWaitTime = currStudent->timeEnteredWindow - currStudent->timeEnteredLine;
 		totalStudentQueueWaitTime += studentsWaitTime;
+
+		queueWaitTimeArray[i] = studentsWaitTime;
 
 		if (studentsWaitTime > longestWaitTime)
 			longestWaitTime = studentsWaitTime;
@@ -224,7 +252,6 @@ void Registrar::calcStats()
 
 	//window focused stats
 	float meanIdleTime;
-	//set it to -1 so it is always replaced by a window's idle time
 	unsigned int longestIdleTime = 0;
 	unsigned int numIdleOverFiveMin = 0; //make sure this is at first
 
@@ -245,7 +272,14 @@ void Registrar::calcStats()
 
 	meanIdleTime = totalWindowIdleTime / numWindows;
 
-	cout << "Total student wait time: " << totalStudentQueueWaitTime << endl;
+	//calculate the median student wait time
+	sort(queueWaitTimeArray, queueWaitTimeArray + completedStudents->getSize());
+
+	int medianIndex = completedStudents->getSize() / 2;
+
+	medianWaitTime = queueWaitTimeArray[medianIndex];
+
+	//cout << "Total student wait time: " << totalStudentQueueWaitTime << endl;
 	cout << "1. Mean Student wait time: " << meanWaitTime<< endl;
 	cout << "2. Median Student Wait Time: " << medianWaitTime << endl;
 	cout << "3. Longest Student Wait Time: " << longestWaitTime << endl;

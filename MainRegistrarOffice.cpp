@@ -14,13 +14,17 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	cout << "Hello!" << endl;
+	if (argc != 2)
+	{
+		cout << "That was not the correct amount of arguments.\nMake sure you're just inputting the file name that you want to read from.\n";
+		return 1;
+	}
 
 	Registrar* office;
 	//this try is to catch any file reading errors
 	try
 	{
-		office = new Registrar("ExampleTestInput.txt");
+		office = new Registrar(argv[1]);
 	}
 	catch (FileNotInCorrectFormatException e)
 	{
@@ -51,6 +55,7 @@ int main(int argc, char** argv)
 	while(office->stillProcessingStudents())
 	{
 		//cout << "I: " << i << endl;
+		//cout << "Current Time: " << office->currentTime << endl;
 		office->timeStep();
 		//try
 		//{
@@ -62,26 +67,26 @@ int main(int argc, char** argv)
 		//	//do nothing.
 		//}
 		
-		cout << "Length of the line: " << office->studentLine->getSize() << endl;
+		//cout << "Length of the line: " << office->studentLine->getSize() << endl;
 
-		int occupiedWindows = 0;
-		for (int i = 0; i < office->numWindows; ++i)
-		{
-			if (office->windowArray[i].occupied == true)
-				occupiedWindows++;
-		}
-		cout << "Number of occupied windows: " << occupiedWindows << endl;
+		//int occupiedWindows = 0;
+		//for (int i = 0; i < office->numWindows; ++i)
+		//{
+		//	if (office->windowArray[i].occupied == true)
+		//		occupiedWindows++;
+		//}
+		//cout << "Number of occupied windows: " << occupiedWindows << endl;
 
-		cout << "Window info:\n";
-		for (int i = 0; i < office->numWindows; ++i)
-		{
-			cout << "\t" << office->windowArray[i].toString() << endl;
-		}
+		//cout << "Window info:\n";
+		//for (int i = 0; i < office->numWindows; ++i)
+		//{
+		//	cout << "\t" << office->windowArray[i].toString() << endl;
+		//}
 
-		cout << endl;
+		//cout << endl;
 	}
 
-	cout << "Length of completed students list: " <<  office->completedStudents->getSize() << endl;
+	//cout << "Length of completed students list: " <<  office->completedStudents->getSize() << endl;
 
 
 	office->calcStats();
