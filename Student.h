@@ -21,9 +21,6 @@ public:
 	string toString();
 
 	bool isAtWindow;
-	//unsigned int originalWindowTime;
-	//unsigned int windowTimeLeft;
-	//unsigned int waitTime;
 
 	unsigned int timeEnteredLine;
 	unsigned int timeEnteredWindow;

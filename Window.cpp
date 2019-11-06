@@ -51,6 +51,7 @@ void Window::takeInStudent(Student* student, unsigned int currTime)
 //will return false if no student or if student isnt done yet
 bool Window::isDoneWithStudent()
 {
+	//if no one is at the window, return false
 	if (occupied == false)
 		return false;
 
@@ -64,8 +65,6 @@ bool Window::isDoneWithStudent()
 //this will reset all the values and remove the student from the window
 Student* Window::removeStudent()
 {
-	//cout << "\t\tRemoving Student\n";
-
 	Student* temp = currentStudent;
 
 	currentStudent->timeLeftWindow = currentTime;
