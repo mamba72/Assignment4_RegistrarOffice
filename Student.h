@@ -16,10 +16,10 @@ class Student
 public:
 	Student(unsigned int timeNeeded, unsigned int currentTime);
 	~Student();
-
-	void timeStep();
+	//functions
 	string toString();
 
+	//vars
 	bool isAtWindow;
 
 	unsigned int timeEnteredLine;

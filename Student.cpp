@@ -25,11 +25,6 @@ Student::~Student()
 	
 }
 
-void Student::timeStep()
-{
-
-}
-
 //for easy printing
 string Student::toString()
 {

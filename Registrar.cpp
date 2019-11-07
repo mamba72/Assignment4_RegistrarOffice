@@ -15,7 +15,7 @@ Registrar::Registrar(string fileName)
 	readFile(fileName);
 	studentLine = new GenListQueue<Student*>();
 	completedStudents = new GenLinkedList<Student*>();
-	statsMonitor = new StatisticsMonitor();
+	//statsMonitor = new StatisticsMonitor();
 
 	//assign the first number in the file to the number of windows
 	numWindows = fileLines->remove();
@@ -24,12 +24,6 @@ Registrar::Registrar(string fileName)
 }
 
 Registrar::~Registrar()
-{
-
-}
-
-
-void Registrar::updateAllStudentTimes()
 {
 
 }
@@ -232,15 +226,16 @@ void Registrar::calcStats()
 	{
 		Student* currStudent = completedStudents->removeFront();
 
-		//cout << "\tTime entered Queue: " << currStudent->timeEnteredWindow << " Time Entered Window: " << currStudent->timeEnteredLine << endl;
 		unsigned int studentsWaitTime = currStudent->timeEnteredWindow - currStudent->timeEnteredLine;
 		totalStudentQueueWaitTime += studentsWaitTime;
 
 		queueWaitTimeArray[i] = studentsWaitTime;
 
+		//get the longest wait time
 		if (studentsWaitTime > longestWaitTime)
 			longestWaitTime = studentsWaitTime;
 
+		//count the number of students waiting over 10 min
 		if (studentsWaitTime > 10)
 			numWaitingOverTenMin++;
 

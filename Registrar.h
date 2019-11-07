@@ -11,7 +11,7 @@ Data Structures Section 1
 #include "Student.h"
 #include "Window.h"
 #include "GenListQueue.h"
-#include "StatisticsMonitor.h"
+//#include "StatisticsMonitor.h"
 #include "fstream"
 #include <string>
 #include <exception>
@@ -24,7 +24,6 @@ public:
 	~Registrar();
 
 	//functions
-	void updateAllStudentTimes();
 	void fillWindows();
 	void readFile(string fileName);
 	bool getNextStudents();
@@ -46,7 +45,7 @@ public:
 	GenLinkedList<Student*>* completedStudents;
 
 	//the object that maintains all the statistics
-	StatisticsMonitor* statsMonitor;
+	//StatisticsMonitor* statsMonitor;
 
 	unsigned int currentTime;
 };
